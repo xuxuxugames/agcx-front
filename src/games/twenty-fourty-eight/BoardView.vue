@@ -30,6 +30,9 @@ export default {
     tiles () {
       return this.board.tiles
         .filter(tile => tile.value !== 0)
+    },
+    score () {
+      return this.board.score
     }
   },
   methods: {

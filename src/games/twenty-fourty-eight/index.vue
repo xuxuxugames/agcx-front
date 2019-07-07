@@ -15,6 +15,9 @@ export default {
   methods: {
     move (direction) {
       this.$refs.boardView.move(direction)
+    },
+    score () {
+      return this.$refs.boardView.score
     }
   }
 }

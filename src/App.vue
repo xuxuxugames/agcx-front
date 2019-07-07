@@ -13,8 +13,8 @@ export default {
     TwentyFourtyEight
   },
   mounted () {
-    this.$refs.tfe.move(0)
-    this.$refs.tfe.move(1)
+    // this.$refs.tfe.move(0)
+    // this.$refs.tfe.move(1)
   }
 }
 </script>

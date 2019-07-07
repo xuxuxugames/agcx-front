@@ -64,6 +64,7 @@ Tile.tileId = 0
 class Board {
   constructor (size = 4) {
     this.size = size
+    this.score = 0
     this.tiles = []
     this.cells = []
 
@@ -117,6 +118,8 @@ class Board {
           var tile2 = currentRow.shift()
           tile2.mergedInto = targetTile
           targetTile.value += tile2.value
+
+          this.score += tile2.value
         }
         resultRow[target] = targetTile
         this.won |= (targetTile.value === 2048)

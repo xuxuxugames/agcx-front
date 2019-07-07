@@ -15,6 +15,10 @@ import Overlay from './Overlay.vue'
 import { Board } from './board'
 
 export default {
+  props: {
+    onScore: Function,
+    onFinish: Function
+  },
   data () {
     return {
       board: new Board()
@@ -33,17 +37,26 @@ export default {
     },
     score () {
       return this.board.score
+    },
+    status () {
+      if (this.board.hasWon()) {
+        return 'win'
+      }
+      if (this.board.hasLost()) {
+        return 'lost'
+      }
+      return 'playing'
     }
   },
   methods: {
     handleKeyDown (event) {
-      if (this.board.hasWon()) {
+      if (this.board.hasWon() || this.board.hasLost()) {
         return
       }
       if (event.keyCode >= 37 && event.keyCode <= 40) {
         event.preventDefault()
         var direction = event.keyCode - 37
-        this.board.move(direction)
+        this.move(direction)
       }
     },
     onRestart () {
@@ -51,6 +64,10 @@ export default {
     },
     move (direction) {
       this.board.move(direction)
+      this.onScore(this.score)
+      if (this.board.hasWon() || this.board.hasLost()) {
+        this.onFinish(this.status)
+      }
     }
   },
   components: {

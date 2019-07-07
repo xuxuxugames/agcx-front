@@ -1,6 +1,6 @@
 <template>
   <section id="twenty-fourty-eight">
-    <BoardView ref="boardView" />
+    <BoardView ref="boardView" :onScore="onScore" :onFinish="onFinish" />
   </section>
 </template>
 
@@ -9,15 +9,16 @@ import BoardView from './BoardView.vue'
 
 export default {
   name: 'TwentyFourtyEight',
+  props: {
+    onScore: Function,
+    onFinish: Function
+  },
   components: {
     BoardView
   },
   methods: {
     move (direction) {
       this.$refs.boardView.move(direction)
-    },
-    score () {
-      return this.$refs.boardView.score
     }
   }
 }

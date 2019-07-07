@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <TwentyFourtyEight ref="tfe" />
+    <TwentyFourtyEight
+      ref="tfe"
+      :onScore="updateScore"
+      :onFinish="finishGame"
+    />
+    <p>{{ score }}</p>
   </div>
 </template>
 
@@ -12,9 +17,18 @@ export default {
   components: {
     TwentyFourtyEight
   },
-  mounted () {
-    // this.$refs.tfe.move(0)
-    // this.$refs.tfe.move(1)
+  data () {
+    return {
+      score: 0
+    }
+  },
+  methods: {
+    updateScore (score) {
+      this.score = score
+    },
+    finishGame (status) {
+      console.log(this.score, status)
+    }
   }
 }
 </script>

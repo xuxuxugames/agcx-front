@@ -45,6 +45,9 @@ export default {
     },
     onRestart () {
       this.board = new Board()
+    },
+    move (direction) {
+      this.board.move(direction)
     }
   },
   components: {

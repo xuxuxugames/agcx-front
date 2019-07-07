@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TwentyFourtyEight />
+    <TwentyFourtyEight ref="tfe" />
   </div>
 </template>
 
@@ -11,6 +11,10 @@ export default {
   name: 'app',
   components: {
     TwentyFourtyEight
+  },
+  mounted () {
+    this.$refs.tfe.move(0)
+    this.$refs.tfe.move(1)
   }
 }
 </script>

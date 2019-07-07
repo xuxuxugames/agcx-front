@@ -1,6 +1,6 @@
 <template>
   <section id="twenty-fourty-eight">
-    <BoardView></BoardView>
+    <BoardView ref="boardView" />
   </section>
 </template>
 
@@ -11,6 +11,11 @@ export default {
   name: 'TwentyFourtyEight',
   components: {
     BoardView
+  },
+  methods: {
+    move (direction) {
+      this.$refs.boardView.move(direction)
+    }
   }
 }
 </script>

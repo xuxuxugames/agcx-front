@@ -23,18 +23,18 @@ export default new Router({
           path: '/home',
           name: 'home',
           component: Home
-        }
-      ]
-    },
-    {
-      path: '/game',
-      name: 'game',
-      component: Game,
-      children: [
+        },
         {
-          path: '/game/2048',
-          name: 'game-2048',
-          component: Game2048
+          path: '/game',
+          name: 'game',
+          component: Game,
+          children: [
+            {
+              path: '/game/2048',
+              name: 'game-2048',
+              component: Game2048
+            }
+          ]
         }
       ]
     }

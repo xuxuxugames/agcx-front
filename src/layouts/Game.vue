@@ -1,56 +1,35 @@
 <template>
-  <el-row type="flex" justify="center">
-    <el-col :span="18">
-      <el-container>
-        <el-header>
-          <Header />
-        </el-header>
-        <el-main>
-          <section id="game">
-            <router-view
-              ref="game"
-              :onScore="updateScore"
-              :onFinish="finishGame"
-              :onMove="onMove"
-            />
-            <div class="controller">
-              <div class="score">{{ score }}</div>
-              <div class="tf-ctrl">
-                <div class="arrow up" @click="move(1)">
-                  <i class="el-icon-arrow-up"></i>
-                </div>
-                <div class="arrow left" @click="move(0)">
-                  <i class="el-icon-arrow-left"></i>
-                </div>
-                <div class="arrow center"></div>
-                <div class="arrow right" @click="move(2)">
-                  <i class="el-icon-arrow-right"></i>
-                </div>
-                <div class="arrow down" @click="move(3)">
-                  <i class="el-icon-arrow-down"></i>
-                </div>
-              </div>
-            </div>
-          </section>
-        </el-main>
-        <el-footer>
-          <Footer />
-        </el-footer>
-      </el-container>
-    </el-col>
-  </el-row>
+  <section id="game">
+    <router-view
+      ref="game"
+      :onScore="updateScore"
+      :onFinish="finishGame"
+      :onMove="onMove"
+    />
+    <div class="controller">
+      <div class="score">{{ score }}</div>
+      <div class="tf-ctrl">
+        <div class="arrow up" @click="move(1)">
+          <i class="el-icon-arrow-up"></i>
+        </div>
+        <div class="arrow left" @click="move(0)">
+          <i class="el-icon-arrow-left"></i>
+        </div>
+        <div class="arrow center"></div>
+        <div class="arrow right" @click="move(2)">
+          <i class="el-icon-arrow-right"></i>
+        </div>
+        <div class="arrow down" @click="move(3)">
+          <i class="el-icon-arrow-down"></i>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
-
 export default {
   name: 'Game',
-  components: {
-    Header,
-    Footer
-  },
   data () {
     return {
       score: 0

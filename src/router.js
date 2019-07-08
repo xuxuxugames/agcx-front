@@ -12,11 +12,7 @@ export default new Router({
     {
       path: '/',
       name: 'root',
-      redirect: '/home'
-    },
-    {
-      path: '/1',
-      name: 'index',
+      redirect: '/home',
       component: Layout,
       children: [
         {

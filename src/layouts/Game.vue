@@ -123,15 +123,30 @@ export default {
       }
     }
 
+    .score::before {
+      z-index: 1;
+      display: block;
+      content: "SCORE";
+      position: relative;
+      background-color: #fff;
+      color: #787d7b;
+      top: -8px;
+      left: 5px;
+      font-size: 10px;
+      height: 10px;
+      width: 48px;
+      margin-bottom: 2px;
+    }
+
     .score {
+      z-index: 0;
       margin-left: 50px;
       width: 160px;
-      height: 40px;
+      height: 50px;
       border: 1px solid #bdc0ba;
       border-radius: 5px;
       font-size: 20px;
       text-align: center;
-      padding-top: 10px;
     }
   }
 }

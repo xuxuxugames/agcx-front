@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Layout from './layouts/Layout.vue'
 import Game from './layouts/Game.vue'
 import Home from './views/Home.vue'
+import Rank from './views/Rank.vue'
 import Game2048 from './components/Game2048.vue'
 
 Vue.use(Router)
@@ -31,6 +32,11 @@ export default new Router({
               component: Game2048
             }
           ]
+        },
+        {
+          path: '/rank',
+          name: 'rank',
+          component: Rank
         }
       ]
     }

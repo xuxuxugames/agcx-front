@@ -82,6 +82,8 @@ export default {
 #game {
   display: flex;
   flex-wrap: wrap;
+  width: 720px;
+  margin: 20px auto;
 
   .controller {
     margin-top: 50px;

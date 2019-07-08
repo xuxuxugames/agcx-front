@@ -39,6 +39,7 @@ export default {
 #twenty-fourty-eight {
   font-family: "Clear Sans", sans-serif;
   font-size: 21px;
+  width: 450px;
 }
 
 .text {

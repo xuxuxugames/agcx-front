@@ -48,11 +48,12 @@ export default {
   flex-wrap: wrap;
 
   .controller {
+    margin-top: 50px;
     margin-left: 20px;
     width: 250px;
 
     .tf-ctrl {
-      margin-top: 120px;
+      margin-top: 70px;
       margin-left: 50px;
 
       .arrow {
@@ -106,8 +107,8 @@ export default {
     }
 
     .score {
-      float: right;
-      width: 150px;
+      margin-left: 50px;
+      width: 160px;
       height: 40px;
       border: 1px solid #bdc0ba;
       border-radius: 5px;

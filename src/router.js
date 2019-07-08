@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from './layouts/Layout.vue'
+import Game from './layouts/Game.vue'
 import Home from './views/Home.vue'
-import Game2048 from './views/Game2048.vue'
+import Game2048 from './components/Game2048.vue'
 
 Vue.use(Router)
 
@@ -28,7 +29,7 @@ export default new Router({
     {
       path: '/game',
       name: 'game',
-      component: Layout,
+      component: Game,
       children: [
         {
           path: '/game/2048',

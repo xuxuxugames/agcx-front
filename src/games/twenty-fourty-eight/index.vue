@@ -1,6 +1,11 @@
 <template>
   <section id="twenty-fourty-eight">
-    <BoardView ref="boardView" :onScore="onScore" :onFinish="onFinish" />
+    <BoardView
+      ref="boardView"
+      :onScore="onScore"
+      :onFinish="onFinish"
+      :onMove="onMove"
+    />
   </section>
 </template>
 
@@ -11,7 +16,8 @@ export default {
   name: 'TwentyFourtyEight',
   props: {
     onScore: Function,
-    onFinish: Function
+    onFinish: Function,
+    onMove: Function
   },
   components: {
     BoardView

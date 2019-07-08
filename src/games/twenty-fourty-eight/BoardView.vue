@@ -17,7 +17,8 @@ import { Board } from './board'
 export default {
   props: {
     onScore: Function,
-    onFinish: Function
+    onFinish: Function,
+    onMove: Function
   },
   data () {
     return {
@@ -64,6 +65,7 @@ export default {
     },
     move (direction) {
       this.board.move(direction)
+      this.onMove(direction)
       this.onScore(this.score)
       if (this.board.hasWon() || this.board.hasLost()) {
         this.onFinish(this.status)

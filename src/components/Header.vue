@@ -23,6 +23,7 @@
         <el-menu-item index="game-snake">贪吃蛇</el-menu-item>
       </el-submenu>
       <el-menu-item index="rank">排行榜</el-menu-item>
+      <el-menu-item index="about">关于</el-menu-item>
     </el-menu>
   </header>
 </template>

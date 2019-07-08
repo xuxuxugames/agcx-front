@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <p>&copy; 2019 XuXuXuGames.</p>
+    <p>Made with love by XuXuXuGames.</p>
   </footer>
 </template>
 

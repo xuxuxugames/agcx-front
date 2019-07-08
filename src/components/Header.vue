@@ -4,8 +4,9 @@
       <h1>AirControl Games Collection</h1>
       <nav class="user">
         <ul>
-          <li><router-link to="/">登录</router-link></li>
-          <li><router-link to="/">注册</router-link></li>
+          <li>
+            <a href="javascript:void(0);" @click="showLogin">登录</a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -25,12 +26,52 @@
       <el-menu-item index="rank">排行榜</el-menu-item>
       <el-menu-item index="about">关于</el-menu-item>
     </el-menu>
+    <el-dialog title="登录" :visible.sync="showLoginForm" width="40%" center>
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
+        <el-form-item label="Email" prop="email" label-width="60px">
+          <el-input
+            v-model="loginForm.email"
+            type="email"
+            placeholder="请输入 Email"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password" label-width="60px">
+          <el-input
+            v-model="loginForm.password"
+            placeholder="请输入密码"
+            show-password
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showLoginForm = false">关 闭</el-button>
+        <el-button type="primary" @click="login">登 录</el-button>
+      </span>
+    </el-dialog>
   </header>
 </template>
 
 <script>
 export default {
   name: 'Header',
+  data () {
+    return {
+      showLoginForm: false,
+      loginForm: {
+        email: '',
+        password: ''
+      },
+      loginRules: {
+        email: [
+          { required: true, message: '请输入 Email', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的 Email', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      }
+    }
+  },
   computed: {
     currentRoute () {
       return this.$router.currentRoute.name
@@ -39,6 +80,21 @@ export default {
   methods: {
     handleSelect (key, keyPath) {
       this.$router.push({ name: key })
+    },
+    showLogin () {
+      this.showLoginForm = true
+    },
+    login () {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          console.log(this.loginForm)
+        } else {
+          this.$notify.error({
+            title: '提示信息',
+            message: 'Email 或密码格式错误'
+          })
+        }
+      })
     }
   }
 }

@@ -3,9 +3,17 @@
     <div class="title">
       <h1>AirControl Games Collection</h1>
       <nav class="user">
-        <ul>
+        <ul v-if="!authed">
           <li>
             <a href="javascript:void(0);" @click="showLogin">登录</a>
+          </li>
+        </ul>
+        <ul v-if="authed">
+          <li>
+            <a href="javascript:void(0);">{{ nickname }}</a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" @click="logout">退出</a>
           </li>
         </ul>
       </nav>
@@ -75,6 +83,12 @@ export default {
   computed: {
     currentRoute () {
       return this.$router.currentRoute.name
+    },
+    authed () {
+      return this.$store.state.user.id !== 0
+    },
+    nickname () {
+      return this.$store.state.user.name
     }
   },
   methods: {
@@ -87,6 +101,9 @@ export default {
     login () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          let token = 'test'
+          this.$store.commit('login', token)
+          this.showLoginForm = false
           console.log(this.loginForm)
         } else {
           this.$notify.error({
@@ -95,6 +112,9 @@ export default {
           })
         }
       })
+    },
+    logout () {
+      this.$store.commit('logout')
     }
   }
 }

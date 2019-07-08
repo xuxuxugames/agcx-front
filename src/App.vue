@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/2048">2048</router-link>
-    </div>
     <router-view />
   </div>
 </template>
@@ -14,5 +10,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 </style>

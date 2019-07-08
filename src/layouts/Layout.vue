@@ -25,6 +25,19 @@ export default {
   components: {
     Header,
     Footer
+  },
+  methods: {
+    checkLogin () {
+      let now = new Date()
+      let expiredAt = this.$store.state.user.expired_at
+
+      if (expiredAt.getTime() - now.getTime() < 0) {
+        this.$store.commit('logout')
+      }
+    }
+  },
+  mounted () {
+    this.checkLogin()
   }
 }
 </script>

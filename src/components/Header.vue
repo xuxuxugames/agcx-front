@@ -104,6 +104,10 @@ export default {
           let token = 'test'
           this.$store.commit('login', token)
           this.showLoginForm = false
+          this.loginForm = {
+            email: '',
+            password: ''
+          }
           console.log(this.loginForm)
         } else {
           this.$notify.error({

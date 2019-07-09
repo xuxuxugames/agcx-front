@@ -32,6 +32,7 @@
         <el-menu-item index="game-snake">贪吃蛇</el-menu-item>
       </el-submenu>
       <el-menu-item index="rank">排行榜</el-menu-item>
+      <el-menu-item index="setting">设置</el-menu-item>
       <el-menu-item index="about">关于</el-menu-item>
     </el-menu>
     <el-dialog title="登录" :visible.sync="showLoginForm" width="40%" center>

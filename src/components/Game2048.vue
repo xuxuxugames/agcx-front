@@ -2,6 +2,7 @@
   <TwentyFourtyEight
     ref="tfe"
     :onScore="onScore"
+    :onReset="onReset"
     :onFinish="onFinish"
     :onMove="onMove"
   />
@@ -17,6 +18,7 @@ export default {
   },
   props: {
     onScore: Function,
+    onReset: Function,
     onFinish: Function,
     onMove: Function
   },

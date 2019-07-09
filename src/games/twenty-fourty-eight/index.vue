@@ -1,30 +1,69 @@
 <template>
   <section id="twenty-fourty-eight">
-    <BoardView
-      ref="boardView"
-      :onScore="onScore"
-      :onFinish="onFinish"
-      :onMove="onMove"
-    />
+    <div class="board" tabIndex="1">
+      <div v-for="(rowItem, rowIndex) in board.cells" :key="rowIndex">
+        <Cell v-for="(colItem, colIndex) in rowItem" :key="colIndex"></Cell>
+      </div>
+      <TileView v-for="tile in tiles" :tile="tile" :key="tile.id"></TileView>
+      <Overlay :board="board" :onrestart="restart"></Overlay>
+    </div>
   </section>
 </template>
 
 <script>
-import BoardView from './BoardView.vue'
+import Cell from './Cell.vue'
+import TileView from './TileView.vue'
+import Overlay from './Overlay.vue'
+import { Board } from './board'
 
 export default {
   name: 'TwentyFourtyEight',
+  components: {
+    Cell,
+    TileView,
+    Overlay
+  },
   props: {
     onScore: Function,
+    onReset: Function,
     onFinish: Function,
     onMove: Function
   },
-  components: {
-    BoardView
+  computed: {
+    tiles () {
+      return this.board.tiles
+        .filter(tile => tile.value !== 0)
+    },
+    score () {
+      return this.board.score
+    },
+    status () {
+      if (this.board.hasWon()) {
+        return 'win'
+      }
+      if (this.board.hasLost()) {
+        return 'lost'
+      }
+      return 'playing'
+    }
   },
   methods: {
+    restart () {
+      this.board = new Board()
+      this.onReset && this.onReset()
+    },
     move (direction) {
-      this.$refs.boardView.move(direction)
+      this.board.move(direction)
+      this.onMove(direction)
+      this.onScore(this.score)
+      if (this.board.hasWon() || this.board.hasLost()) {
+        this.onFinish(this.status)
+      }
+    }
+  },
+  data () {
+    return {
+      board: new Board()
     }
   }
 }

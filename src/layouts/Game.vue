@@ -3,6 +3,7 @@
     <router-view
       ref="game"
       :onScore="updateScore"
+      :onReset="restartGame"
       :onFinish="finishGame"
       :onMove="onMove"
     />
@@ -33,14 +34,36 @@ export default {
   name: 'Game',
   data () {
     return {
-      score: 0
+      score: 0,
+      finished: false
     }
   },
+  mounted () {
+    window.addEventListener('keydown', this.handleKeyDown.bind(this))
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.handleKeyDown.bind(this))
+  },
   methods: {
+    handleKeyDown (event) {
+      if (this.finished) {
+        return
+      }
+      if (event.keyCode >= 37 && event.keyCode <= 40) {
+        event.preventDefault()
+        var direction = event.keyCode - 37
+        this.move(direction)
+      }
+    },
+    restartGame () {
+      this.score = 0
+      this.finished = false
+    },
     updateScore (score) {
       this.score = score
     },
     finishGame (status) {
+      this.finished = true
       console.log(this.score, status)
     },
     onMove (direction) {

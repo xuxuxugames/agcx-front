@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scope>
 #about {
   width: 700px;
   margin: 0 auto;

@@ -8,6 +8,7 @@
     />
     <div class="controller">
       <div class="score">{{ score }}</div>
+      <div class="image">camera</div>
       <div class="tf-ctrl">
         <div class="arrow up" @click="move(1)">
           <i class="el-icon-arrow-up"></i>
@@ -65,12 +66,12 @@ export default {
   margin: 20px auto;
 
   .controller {
-    margin-top: 50px;
+    margin-top: 20px;
     margin-left: 20px;
     width: 250px;
 
     .tf-ctrl {
-      margin-top: 70px;
+      margin-top: 30px;
       margin-left: 50px;
 
       .arrow {
@@ -147,6 +148,16 @@ export default {
       border-radius: 5px;
       font-size: 20px;
       text-align: center;
+    }
+
+    .image {
+      width: 160px;
+      height: 120px;
+      border: 1px solid #bdc0ba;
+      border-radius: 5px;
+      margin-left: 50px;
+      margin-top: 30px;
+      overflow: hidden;
     }
   }
 }

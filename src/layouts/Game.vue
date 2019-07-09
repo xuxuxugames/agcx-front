@@ -173,6 +173,7 @@ export default {
     .tf-ctrl {
       margin-top: 30px;
       margin-left: 50px;
+      height: 200px;
 
       .arrow {
         margin: 0;

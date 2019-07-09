@@ -6,6 +6,7 @@ import Home from './views/Home.vue'
 import Rank from './views/Rank.vue'
 import About from './views/About.vue'
 import Game2048 from './components/Game2048.vue'
+import GameSnake from './components/GameSnake.vue'
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
               path: '/game/2048',
               name: 'game-2048',
               component: Game2048
+            },
+            {
+              path: '/game/snake',
+              name: 'game-snake',
+              component: GameSnake
             }
           ]
         },

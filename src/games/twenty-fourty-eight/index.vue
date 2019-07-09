@@ -72,7 +72,7 @@ export default {
 <style lang="scss" scope>
 @font-face {
   font-family: "Clear Sans";
-  src: url("../../assets/clear-sans.ttf") format("truetype");
+  src: url("../../assets/fonts/clear-sans.ttf") format("truetype");
 }
 
 #twenty-fourty-eight {

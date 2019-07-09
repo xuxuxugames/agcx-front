@@ -3,11 +3,13 @@
     <router-view
       ref="game"
       :onScore="updateScore"
+      :onReset="restartGame"
       :onFinish="finishGame"
       :onMove="onMove"
     />
     <div class="controller">
       <div class="score">{{ score }}</div>
+      <div class="image">camera</div>
       <div class="tf-ctrl">
         <div class="arrow up" @click="move(1)">
           <i class="el-icon-arrow-up"></i>
@@ -32,14 +34,36 @@ export default {
   name: 'Game',
   data () {
     return {
-      score: 0
+      score: 0,
+      finished: false
     }
   },
+  mounted () {
+    window.addEventListener('keydown', this.handleKeyDown.bind(this))
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.handleKeyDown.bind(this))
+  },
   methods: {
+    handleKeyDown (event) {
+      if (this.finished) {
+        return
+      }
+      if (event.keyCode >= 37 && event.keyCode <= 40) {
+        event.preventDefault()
+        var direction = event.keyCode - 37
+        this.move(direction)
+      }
+    },
+    restartGame () {
+      this.score = 0
+      this.finished = false
+    },
     updateScore (score) {
       this.score = score
     },
     finishGame (status) {
+      this.finished = true
       console.log(this.score, status)
     },
     onMove (direction) {
@@ -65,12 +89,12 @@ export default {
   margin: 20px auto;
 
   .controller {
-    margin-top: 50px;
+    margin-top: 20px;
     margin-left: 20px;
     width: 250px;
 
     .tf-ctrl {
-      margin-top: 70px;
+      margin-top: 30px;
       margin-left: 50px;
 
       .arrow {
@@ -147,6 +171,16 @@ export default {
       border-radius: 5px;
       font-size: 20px;
       text-align: center;
+    }
+
+    .image {
+      width: 160px;
+      height: 120px;
+      border: 1px solid #bdc0ba;
+      border-radius: 5px;
+      margin-left: 50px;
+      margin-top: 30px;
+      overflow: hidden;
     }
   }
 }

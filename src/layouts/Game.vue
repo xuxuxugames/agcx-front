@@ -1,5 +1,12 @@
 <template>
   <section id="game">
+    <div class="setting">
+      <el-button
+        icon="el-icon-setting"
+        @click="settingFormVisible = true"
+        circle
+      ></el-button>
+    </div>
     <router-view
       ref="game"
       :onScore="updateScore"
@@ -11,21 +18,47 @@
       <div class="score">{{ score }}</div>
       <div class="image">camera</div>
       <div class="tf-ctrl">
-        <div class="arrow up" @click="move(1)">
+        <div class="arrow up" @click="handleArrowTouch(1)">
           <i class="el-icon-arrow-up"></i>
         </div>
-        <div class="arrow left" @click="move(0)">
+        <div class="arrow left" @click="handleArrowTouch(0)">
           <i class="el-icon-arrow-left"></i>
         </div>
         <div class="arrow center"></div>
-        <div class="arrow right" @click="move(2)">
+        <div class="arrow right" @click="handleArrowTouch(2)">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <div class="arrow down" @click="move(3)">
+        <div class="arrow down" @click="handleArrowTouch(3)">
           <i class="el-icon-arrow-down"></i>
         </div>
       </div>
     </div>
+
+    <el-dialog
+      title="设 置"
+      :visible.sync="settingFormVisible"
+      width="30%"
+      center
+    >
+      <el-form>
+        <el-form-item label="方向键控制" prop="keyboard" label-width="100px">
+          <el-switch v-model="switchs.keyboard"></el-switch>
+        </el-form-item>
+      </el-form>
+      <el-form>
+        <el-form-item label="鼠标控制" prop="touch" label-width="100px">
+          <el-switch v-model="switchs.touch"></el-switch>
+        </el-form-item>
+      </el-form>
+      <el-form>
+        <el-form-item label="隔空控制" prop="air" label-width="100px">
+          <el-switch v-model="switchs.air"></el-switch>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="settingFormVisible = false">关 闭</el-button>
+      </span>
+    </el-dialog>
   </section>
 </template>
 
@@ -34,6 +67,12 @@ export default {
   name: 'Game',
   data () {
     return {
+      settingFormVisible: false,
+      switchs: {
+        keyboard: true,
+        touch: true,
+        air: true
+      },
       score: 0,
       finished: false
     }
@@ -49,11 +88,32 @@ export default {
       if (this.finished) {
         return
       }
+      if (!this.switchs.keyboard) {
+        return
+      }
       if (event.keyCode >= 37 && event.keyCode <= 40) {
         event.preventDefault()
         var direction = event.keyCode - 37
         this.move(direction)
       }
+    },
+    handleArrowTouch (direction) {
+      if (this.finished) {
+        return
+      }
+      if (!this.switchs.touch) {
+        return
+      }
+      this.move(direction)
+    },
+    handleAirControl (direction) {
+      if (this.finished) {
+        return
+      }
+      if (!this.switchs.air) {
+        return
+      }
+      this.move(direction)
     },
     restartGame () {
       this.score = 0
@@ -87,6 +147,23 @@ export default {
   flex-wrap: wrap;
   width: 720px;
   margin: 20px auto;
+
+  .setting {
+    z-index: 1;
+    display: block;
+    float: left;
+    width: 0;
+    height: 0;
+    position: relative;
+    top: -20px;
+    left: -20px;
+    opacity: 0.5;
+    transition: 200ms;
+  }
+
+  .setting:hover {
+    opacity: 1;
+  }
 
   .controller {
     margin-top: 20px;
@@ -164,6 +241,7 @@ export default {
 
     .score {
       z-index: 0;
+      margin-top: 20px;
       margin-left: 50px;
       width: 160px;
       height: 50px;

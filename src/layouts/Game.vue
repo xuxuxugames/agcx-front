@@ -37,7 +37,7 @@
     <el-dialog
       title="设 置"
       :visible.sync="settingFormVisible"
-      width="30%"
+      width="250px"
       center
     >
       <el-form>

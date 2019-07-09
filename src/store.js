@@ -6,6 +6,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    api: {
+      baseUrl: 'http://127.0.0.1:8000',
+      timeout: 5000
+    },
     user: {
       id: 0,
       email: '',

@@ -282,11 +282,11 @@ export default {
     }
 
     .image {
-      width: 160px;
+      width: 120px;
       height: 120px;
       border: 1px solid #bdc0ba;
       border-radius: 5px;
-      margin-left: 50px;
+      margin-left: 70px;
       margin-top: 30px;
       overflow: hidden;
     }

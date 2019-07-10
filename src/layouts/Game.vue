@@ -197,7 +197,6 @@ export default {
   }
 
   .controller {
-    margin-top: 20px;
     margin-left: 20px;
     width: 250px;
 

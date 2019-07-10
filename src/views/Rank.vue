@@ -29,18 +29,33 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small">筛选</el-button>
+          <el-button type="primary" size="small" @click="loadRanks"
+            >筛选</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
     <div class="ranks">
-      <el-table v-loading="tableLoading" highlight-current-row :data="ranks.data">
-        <el-table-column prop="rank" label="排名" width="70"></el-table-column>
-        <el-table-column prop="name" label="昵称" width="200">
+      <el-table
+        v-loading="tableLoading"
+        highlight-current-row
+        :data="ranks.data"
+      >
+        <el-table-column
+          prop="id"
+          label="排名"
+          width="70"
+          :formatter="rankFormatter"
+        ></el-table-column>
+        <el-table-column prop="user.name" label="昵称" width="200">
         </el-table-column>
         <el-table-column prop="score" label="分数" width="150">
         </el-table-column>
-        <el-table-column prop="created_at" label="记录时间"></el-table-column>
+        <el-table-column
+          prop="created_at"
+          label="记录时间"
+          :formatter="dateFormatter"
+        ></el-table-column>
       </el-table>
       <el-pagination
         background
@@ -49,7 +64,7 @@
         :page-size="ranks.per_page"
         :current-page="ranks.current_page"
         @current-change="handleCurrentChange"
-        >
+      >
       </el-pagination>
     </div>
   </section>
@@ -114,32 +129,27 @@ export default {
         per_page: 0,
         data: []
       }
-      // ranks: [
-      //   {
-      //     rank: '1',
-      //     name: 'kotoyuuko',
-      //     score: '10001',
-      //     created_at: (new Date()).toLocaleString()
-      //   },
-      //   {
-      //     rank: '2',
-      //     name: 'kotoyuuko',
-      //     score: '10000',
-      //     created_at: (new Date()).toLocaleString()
-      //   },
-      //   {
-      //     rank: '3',
-      //     name: 'kotoyuuko',
-      //     score: '9999',
-      //     created_at: (new Date()).toLocaleString()
-      //   }
-      // ]
     }
   },
+  mounted () {
+    this.loadRanks()
+  },
   methods: {
+    dateFormatter (row, column) {
+      let d = row[column.property]
+      if (d === undefined) {
+        return ''
+      }
+      return new Date(d).toLocaleString()
+    },
+    rankFormatter (row, column) {
+      let base = (this.ranks.current_page - 1) * this.ranks.per_page
+      let rank = base + this.ranks.data.indexOf(row) + 1
+      return rank.toString()
+    },
     loadRanks () {
       this.tableLoading = true
-      scoreList(this.ranks.current_page).then(res => {
+      scoreList(this.selectedGame, this.selectedPeriod, this.ranks.current_page).then(res => {
         this.tableLoading = false
         this.ranks.total = res.data.total
         this.ranks.current_page = res.data.current_page
@@ -150,7 +160,7 @@ export default {
         console.log(err)
         this.$notify.error({
           title: '提示',
-          message: '获取排名列表失败'
+          message: '获取排行榜失败'
         })
       })
     },
@@ -169,10 +179,16 @@ export default {
 
   .toolbar {
     padding: 10px 20px;
+    margin: 0 auto;
 
     .el-select {
       width: 100px;
     }
+  }
+
+  .el-pagination {
+    float: right;
+    margin-top: 10px;
   }
 }
 </style>

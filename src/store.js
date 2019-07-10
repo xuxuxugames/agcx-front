@@ -4,6 +4,19 @@ import { Base64 } from 'js-base64'
 
 Vue.use(Vuex)
 
+function tokenExpired (token) {
+  if (token !== undefined && token !== '') {
+    let preloads = JSON.parse(Base64.decode(token.split('.')[1]))
+    if (preloads.expired_at !== undefined) {
+      return new Date(preloads.expired_at)
+    } else {
+      return new Date()
+    }
+  } else {
+    return new Date()
+  }
+}
+
 export default new Vuex.Store({
   state: {
     api: {
@@ -14,33 +27,28 @@ export default new Vuex.Store({
       id: 0,
       email: '',
       name: '',
-      token: '',
-      expired_at: new Date()
+      token: window.localStorage.getItem('token'),
+      expired_at: tokenExpired(window.localStorage.getItem('token'))
     }
   },
   mutations: {
     login (state, token) {
-      state.user = {
-        id: 1,
-        email: 'kokoro@core.moe',
-        name: 'kotoyuuko',
-        token: Base64.encode(token),
-        expired_at: new Date()
-      }
-      // let preloads = JSON.parse(Base64.decode(token.split('.')[1]))
-      // if (preloads.expired_at !== undefined) {
-      //   let now = new Date()
-      //   let expiredAt = new Date(preloads.expired_at)
-      //   if (expiredAt.getTime() - now.getTime() < 0) {
-      //     return
-      //   }
+      let preloads = JSON.parse(Base64.decode(token.split('.')[1]))
+      if (preloads.expired_at !== undefined) {
+        let now = new Date()
+        let expiredAt = new Date(preloads.expired_at)
+        if (expiredAt.getTime() - now.getTime() < 0) {
+          return
+        }
 
-      //   state.user.id = preloads.id
-      //   state.user.email = preloads.email
-      //   state.user.name = preloads.name
-      //   state.user.token = token
-      //   state.user.expired_at = expiredAt
-      // }
+        state.user.id = preloads.id
+        state.user.email = preloads.email
+        state.user.name = preloads.name
+        state.user.token = token
+        state.user.expired_at = expiredAt
+
+        window.localStorage.setItem('token', token)
+      }
     },
     logout (state) {
       state.user = {
@@ -50,6 +58,7 @@ export default new Vuex.Store({
         token: '',
         expired_at: new Date()
       }
+      window.localStorage.setItem('token', '')
     }
   }
 })

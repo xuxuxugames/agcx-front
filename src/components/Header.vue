@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import { userLogin } from '@/requests/user'
+
 export default {
   name: 'Header',
   data () {
@@ -102,14 +104,29 @@ export default {
     login () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          let token = 'test'
-          this.$store.commit('login', token)
-          this.showLoginForm = false
-          this.loginForm = {
-            email: '',
-            password: ''
-          }
-          console.log(this.loginForm)
+          userLogin(this.loginForm.email, this.loginForm.password).then(res => {
+            if (res.status === 200) {
+              let token = res.data.token
+              this.$store.commit('login', token)
+              this.showLoginForm = false
+              this.loginForm = {
+                email: '',
+                password: ''
+              }
+            } else {
+              console.log(res.data)
+              this.$notify.error({
+                title: '提示信息',
+                message: 'Email 或密码错误'
+              })
+            }
+          }).catch(err => {
+            console.log(err)
+            this.$notify.error({
+              title: '提示信息',
+              message: 'Email 或密码错误'
+            })
+          })
         } else {
           this.$notify.error({
             title: '提示信息',

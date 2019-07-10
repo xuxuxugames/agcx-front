@@ -33,6 +33,8 @@ export default {
 
       if (expiredAt.getTime() - now.getTime() < 0) {
         this.$store.commit('logout')
+      } else {
+        this.$store.commit('login', this.$store.state.user.token)
       }
     }
   },

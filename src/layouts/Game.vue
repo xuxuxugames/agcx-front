@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import { commitScore } from '@/requests/score'
+
 export default {
   name: 'Game',
   data () {
@@ -79,6 +81,13 @@ export default {
   },
   mounted () {
     window.addEventListener('keydown', this.handleKeyDown.bind(this))
+
+    if (this.$store.state.user.token === undefined || this.$store.state.user.token === '') {
+      this.$notify.info({
+        title: '提示信息',
+        message: '您还没有登录，成绩将不会计入排行榜'
+      })
+    }
   },
   beforeDestroy () {
     window.removeEventListener('keydown', this.handleKeyDown.bind(this))
@@ -124,7 +133,27 @@ export default {
     },
     finishGame (status) {
       this.finished = true
-      console.log(this.score, status)
+      let gameName = this.$router.currentRoute.name.split('-')[1]
+      commitScore(this.$store.state.user.id, gameName, this.score).then(res => {
+        if (res.status === 201) {
+          this.$notify({
+            title: '提示信息',
+            message: '成绩已提交',
+            type: 'success'
+          })
+        } else {
+          this.$notify.error({
+            title: '提示信息',
+            message: '提交成绩失败'
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$notify.error({
+          title: '提示信息',
+          message: '提交成绩失败'
+        })
+      })
     },
     onMove (direction) {
       let divs = ['left', 'up', 'right', 'down']

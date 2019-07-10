@@ -5,7 +5,10 @@
       <nav class="user">
         <ul v-if="!authed">
           <li>
-            <a href="javascript:void(0);" @click="showLogin">登录</a>
+            <a href="javascript:void(0);" @click="showLoginForm = true">登录</a>
+            <a href="javascript:void(0);" @click="showRegisterForm = true"
+              >注册</a
+            >
           </li>
         </ul>
         <ul v-if="authed">
@@ -35,7 +38,8 @@
       <el-menu-item index="setting">设置</el-menu-item>
       <el-menu-item index="about">关于</el-menu-item>
     </el-menu>
-    <el-dialog title="登录" :visible.sync="showLoginForm" width="40%" center>
+
+    <el-dialog title="登 录" :visible.sync="showLoginForm" width="40%" center>
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
         <el-form-item label="Email" prop="email" label-width="60px">
           <el-input
@@ -57,11 +61,46 @@
         <el-button type="primary" @click="login">登 录</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="注 册"
+      :visible.sync="showRegisterForm"
+      width="40%"
+      center
+    >
+      <el-form ref="registerForm" :model="registerForm" :rules="registerRules">
+        <el-form-item label="昵称" prop="name" label-width="60px">
+          <el-input
+            v-model="registerForm.name"
+            type="text"
+            placeholder="请输入昵称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="Email" prop="email" label-width="60px">
+          <el-input
+            v-model="registerForm.email"
+            type="email"
+            placeholder="请输入 Email"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password" label-width="60px">
+          <el-input
+            v-model="registerForm.password"
+            placeholder="请输入密码"
+            show-password
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showRegisterForm = false">关 闭</el-button>
+        <el-button type="primary" @click="register">注 册</el-button>
+      </span>
+    </el-dialog>
   </header>
 </template>
 
 <script>
-import { userLogin } from '@/requests/user'
+import { userLogin, userCreate } from '@/requests/user'
 
 export default {
   name: 'Header',
@@ -73,6 +112,24 @@ export default {
         password: ''
       },
       loginRules: {
+        email: [
+          { required: true, message: '请输入 Email', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的 Email', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      },
+      showRegisterForm: false,
+      registerForm: {
+        name: '',
+        email: '',
+        password: ''
+      },
+      registerRules: {
+        name: [
+          { required: true, message: '请输入昵称', trigger: 'blur' }
+        ],
         email: [
           { required: true, message: '请输入 Email', trigger: 'blur' },
           { type: 'email', message: '请输入正确的 Email', trigger: 'blur' }
@@ -97,9 +154,6 @@ export default {
   methods: {
     handleSelect (key, keyPath) {
       this.$router.push({ name: key })
-    },
-    showLogin () {
-      this.showLoginForm = true
     },
     login () {
       this.$refs.loginForm.validate(valid => {
@@ -137,6 +191,45 @@ export default {
     },
     logout () {
       this.$store.commit('logout')
+    },
+    register () {
+      this.$refs.registerForm.validate(valid => {
+        if (valid) {
+          userCreate(this.registerForm.name, this.registerForm.email, this.registerForm.password).then(res => {
+            if (res.status === 201) {
+              this.$notify({
+                title: '提示信息',
+                message: '注册成功，请登录',
+                type: 'success'
+              })
+              this.showRegisterForm = false
+              this.showLoginForm = true
+              this.registerForm = {
+                name: '',
+                email: '',
+                password: ''
+              }
+            } else {
+              console.log(res.data)
+              this.$notify.error({
+                title: '提示信息',
+                message: '注册失败'
+              })
+            }
+          }).catch(err => {
+            console.log(err)
+            this.$notify.error({
+              title: '提示信息',
+              message: '注册失败'
+            })
+          })
+        } else {
+          this.$notify.error({
+            title: '提示信息',
+            message: '昵称、Email 或密码格式错误'
+          })
+        }
+      })
     }
   }
 }

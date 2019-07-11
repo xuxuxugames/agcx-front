@@ -33,6 +33,7 @@
         </template>
         <el-menu-item index="game-2048">2048</el-menu-item>
         <el-menu-item index="game-snake">贪吃蛇</el-menu-item>
+        <el-menu-item index="game-tetris">俄罗斯方块</el-menu-item>
       </el-submenu>
       <el-menu-item index="rank">排行榜</el-menu-item>
       <el-menu-item index="setting">设置</el-menu-item>

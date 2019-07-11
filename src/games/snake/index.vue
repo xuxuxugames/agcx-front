@@ -22,6 +22,7 @@ export default {
   name: 'Snake',
   props: {
     onScore: Function,
+    onReset: Function,
     onFinish: Function,
     onMove: Function
   },

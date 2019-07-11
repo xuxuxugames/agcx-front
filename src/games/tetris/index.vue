@@ -1,10 +1,10 @@
 <template>
-  <section id="snake"></section>
+  <section id="tetris"></section>
 </template>
 
 <script>
 export default {
-  name: 'Snake',
+  name: 'Tetris',
   props: {
     onScore: Function,
     onReset: Function,
@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#snake {
+#tetris {
   width: 450px;
   background-color: #000;
 }

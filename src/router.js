@@ -8,6 +8,7 @@ import Setting from './views/Setting.vue'
 import About from './views/About.vue'
 import Game2048 from './components/Game2048.vue'
 import GameSnake from './components/GameSnake.vue'
+import GameTetris from './components/GameTetris.vue'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
               path: '/game/snake',
               name: 'game-snake',
               component: GameSnake
+            },
+            {
+              path: '/game/tetris',
+              name: 'game-tetris',
+              component: GameTetris
             }
           ]
         },

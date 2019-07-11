@@ -1,6 +1,6 @@
 <template>
-  <Snake
-    ref="snake"
+  <Tetris
+    ref="tetris"
     :onScore="onScore"
     :onReset="onReset"
     :onFinish="onFinish"
@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import Snake from '@/games/snake'
+import Tetris from '@/games/tetris'
 
 export default {
-  name: 'GameSnake',
+  name: 'GameTetris',
   components: {
-    Snake
+    Tetris
   },
   props: {
     onScore: Function,
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     move (direction) {
-      this.$refs.snake.move(direction)
+      this.$refs.tetris.move(direction)
     }
   }
 }

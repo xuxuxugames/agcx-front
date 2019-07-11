@@ -92,8 +92,8 @@ export default {
           label: '贪吃蛇'
         },
         {
-          value: 'pacman',
-          label: '吃豆人'
+          value: 'tetris',
+          label: '俄罗斯方块'
         }
       ],
       pickerOptions: {

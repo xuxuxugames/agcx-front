@@ -5,7 +5,7 @@ import { Base64 } from 'js-base64'
 Vue.use(Vuex)
 
 function tokenExpired (token) {
-  if (token !== undefined && token !== '') {
+  if (token !== undefined && typeof token === 'string') {
     let preloads = JSON.parse(Base64.decode(token.split('.')[1]))
     if (preloads.expired_at !== undefined) {
       return new Date(preloads.expired_at)

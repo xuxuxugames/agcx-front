@@ -16,7 +16,13 @@
     />
     <div class="controller">
       <div class="score">{{ score }}</div>
-      <div class="image">camera</div>
+      <div class="image">
+        <TensorController
+          v-if="switchs.air"
+          :onMove="tensorMove"
+          :playing="!finished && switchs.air"
+        ></TensorController>
+      </div>
       <div class="tf-ctrl">
         <div class="arrow up" @click="handleArrowTouch(1)">
           <i class="el-icon-arrow-up"></i>
@@ -64,16 +70,20 @@
 
 <script>
 import { commitScore } from '@/requests/score'
+import TensorController from '@/components/TensorController.vue'
 
 export default {
   name: 'Game',
+  components: {
+    TensorController
+  },
   data () {
     return {
       settingFormVisible: false,
       switchs: {
         keyboard: true,
         touch: true,
-        air: true
+        air: false
       },
       score: 0,
       finished: false
@@ -167,6 +177,20 @@ export default {
     },
     move (direction) {
       this.$refs.game.move(direction)
+    },
+    tensorMove (direction) {
+      if (!this.switchs.air) {
+        return
+      }
+      if (direction === -1) {
+        this.switchs.air = false
+        this.$notify.error({
+          title: '提示信息',
+          message: '使用隔空操控前请先进行设置'
+        })
+        return
+      }
+      this.move(direction)
     }
   }
 }
@@ -283,6 +307,7 @@ export default {
     }
 
     .image {
+      z-index: 0;
       width: 120px;
       height: 120px;
       border: 1px solid #bdc0ba;
@@ -290,6 +315,22 @@ export default {
       margin-left: 70px;
       margin-top: 30px;
       overflow: hidden;
+
+      video {
+        margin-top: -15px;
+      }
+    }
+
+    .image::before {
+      content: "Air Controller OFF";
+      position: relative;
+      z-index: -1;
+      color: #787d7b;
+      display: block;
+      text-align: center;
+      font-size: 15px;
+      height: 15px;
+      top: 50px;
     }
   }
 }

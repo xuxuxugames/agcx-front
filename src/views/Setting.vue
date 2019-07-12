@@ -145,7 +145,7 @@ export default {
 
         img.dispose()
 
-        if (classData[classId] > 5.12) {
+        if (classData[classId] > 2.56) {
           console.log(classId, classData)
           this.activeClass(classId)
           this.canPredict = false

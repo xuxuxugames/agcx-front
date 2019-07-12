@@ -1,16 +1,25 @@
 <template>
   <section id="snake">
     <div class="game-panel">
-      <div v-for="col in 2025" :key="col" class="col-item" :class="{'snake': isSnake(col), 'food': food == col, 'snake-head': isHead(col)}"></div>
+      <div
+        v-for="col in 2025"
+        :key="col"
+        class="col-item"
+        :class="{
+          snake: isSnake(col),
+          food: food == col,
+          'snake-head': isHead(col)
+        }"
+      ></div>
     </div>
     <div class="game-over" v-if="gameOver">
       <span class="game-over-text">GAME OVER</span>
-      <br>
+      <br />
       <span class="restart" @click="restart">Click here to restart !</span>
     </div>
     <div class="game-over" v-if="success">
       <span class="game-over-text">WIN</span>
-      <br>
+      <br />
       <span class="restart" @click="restart">Click here to restart !</span>
     </div>
   </section>
@@ -43,11 +52,6 @@ export default {
   created () {
     this.init()
   },
-  mounted () {
-    document.onkeydown = event => {
-      this.keyUp(event)
-    }
-  },
   methods: {
     checkRule () {
       let uniqBady = _.uniq(this.snakeBody)
@@ -56,6 +60,7 @@ export default {
       } else if (this.snakeBody.length === 2025) {
         clearInterval(this.intId)
         this.success = true
+        this.onFinish('win')
       } else {
         switch (uniqBady.length) {
           case 3:
@@ -78,7 +83,7 @@ export default {
     changeSpeed (speed) {
       // clearInterval(this.intId)
       this.speed = speed
-      this.move()
+      this.doMove()
     },
     restart () {
       this.snakeBody = [1]
@@ -87,10 +92,12 @@ export default {
       this.success = false
       this.speed = 300
       this.init()
+      this.onReset()
     },
     stop () {
       clearInterval(this.intId)
       this.gameOver = true
+      this.onFinish('lost')
     },
     isSnake (col) {
       return _.indexOf(this.snakeBody, col) > -1
@@ -102,7 +109,7 @@ export default {
       this.direction = direction
     },
     // 控制蛇的移动
-    move () {
+    doMove () {
       clearInterval(this.intId)
       this.intId = setInterval(() => {
         const last = _.last(this.snakeBody)
@@ -110,8 +117,8 @@ export default {
         if (last === this.food) {
           newBody = this.snakeBody
           this.food = _.random(1, 2025)
-          this.score++
-          console.log(this.score)
+          this.score += this.snakeBody.length
+          this.onScore(this.score)
         } else {
           newBody = _.rest(this.snakeBody)
         }
@@ -148,25 +155,24 @@ export default {
         this.snakeBody = newBody
       }, this.speed)
     },
-    keyUp (event) {
-      if (event.keyCode === 37 && this.direction !== 'RIGHT' && this.direction !== 'LEFT') {
+    move (direction) {
+      if (direction === 0 && this.direction !== 'LEFT' && this.direction !== 'RIGHT') {
         this.direction = 'LEFT'
-        // console.log(this.speed)
-      } else if (event.keyCode === 38 && this.direction !== 'DOWN' && this.direction !== 'TOP') {
+      } else if (direction === 1 && this.direction !== 'TOP' && this.direction !== 'DOWN') {
         this.direction = 'TOP'
-        // console.log(this.speed)
-      } else if (event.keyCode === 39 && this.direction !== 'LEFT' && this.direction !== 'RIGHT') {
+      } else if (direction === 2 && this.direction !== 'LEFT' && this.direction !== 'RIGHT') {
         this.direction = 'RIGHT'
-        // console.log(this.speed)
-      } else if (event.keyCode === 40 && this.direction !== 'TOP' && this.direction !== 'DOWN') {
+      } else if (direction === 3 && this.direction !== 'TOP' && this.direction !== 'DOWN') {
         this.direction = 'DOWN'
-        // console.log(this.speed)
+      } else {
+        return
       }
+      this.onMove(direction)
     },
     init () {
       this.score = 0
       this.food = _.random(1, 2025)
-      this.move()
+      this.doMove()
     }
   }
 }
@@ -180,53 +186,53 @@ export default {
 </style>
 
 <style scoped>
-  .game-panel {
-    position: relative;
-    width: 450px;
-    height: 450px;
-    overflow: hidden;
-    line-height: 0;
-    margin: auto;
-  }
+.game-panel {
+  position: relative;
+  width: 450px;
+  height: 450px;
+  overflow: hidden;
+  line-height: 0;
+  margin: auto;
+}
 
-  .col-item {
-    background: black;
-    width: 10px;
-    height: 10px;
-    display: inline-block;
-  }
+.col-item {
+  background: black;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}
 
-  .snake {
-    background: white;
-  }
+.snake {
+  background: white;
+}
 
-  .snake-head {
-    background: white;
-  }
+.snake-head {
+  background: white;
+}
 
-  .food {
-    background: white;
-  }
+.food {
+  background: white;
+}
 
-  .game-over {
-    position: fixed;
-    top: 190px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-top: 170px;
-    margin-right: 250px;
-    text-align: center;
-    color: white;
-  }
+.game-over {
+  position: fixed;
+  top: 190px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 170px;
+  margin-right: 250px;
+  text-align: center;
+  color: white;
+}
 
-  .game-over-text {
-    font-size: 60px;
-  }
+.game-over-text {
+  font-size: 60px;
+}
 
-  .restart {
-    /*margin-top: 30px;*/
-    font-size: 30px;
-    color: white;
-  }
+.restart {
+  /*margin-top: 30px;*/
+  font-size: 30px;
+  color: white;
+}
 </style>

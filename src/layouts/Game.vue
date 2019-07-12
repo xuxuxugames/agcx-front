@@ -143,6 +143,7 @@ export default {
     },
     finishGame (status) {
       this.finished = true
+      console.log('game finished: ' + status)
       let gameName = this.$router.currentRoute.name.split('-')[1]
       if (this.$store.state.user.id !== 0) {
         commitScore(this.$store.state.user.id, gameName, this.score).then(res => {

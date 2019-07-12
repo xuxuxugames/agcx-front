@@ -19,6 +19,7 @@ function tokenExpired (token) {
 
 export default new Vuex.Store({
   state: {
+    tensorSensitivity: 2.56,
     api: {
       baseUrl: 'http://172.20.10.3:8000',
       timeout: 5000

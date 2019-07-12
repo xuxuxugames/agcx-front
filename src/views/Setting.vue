@@ -145,7 +145,7 @@ export default {
 
         img.dispose()
 
-        if (classData[classId] > 2.56) {
+        if (classData[classId] > this.$store.state.tensorSensitivity) {
           console.log(classId, classData)
           this.activeClass(classId)
           this.canPredict = false

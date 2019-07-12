@@ -8,33 +8,36 @@ export async function loadTruncatedMobileNet () {
   return tf.model({ inputs: mobilenet.inputs, outputs: layer.output })
 }
 
-export async function trainModel (mobileNet, dataset) {
+export async function trainModel (mobileNet, dataset, model = null) {
   if (dataset.xs == null) {
     throw new Error('Add some examples before training!')
   }
 
-  const model = tf.sequential({
-    layers: [
-      tf.layers.flatten({
-        inputShape: mobileNet.outputs[0].shape.slice(1)
-      }),
-      tf.layers.dense({
-        units: 100,
-        activation: 'relu',
-        kernelInitializer: 'varianceScaling',
-        useBias: true
-      }),
-      tf.layers.dense({
-        name: 'data',
-        units: 4,
-        kernelInitializer: 'varianceScaling',
-        useBias: false
-      }),
-      tf.layers.softmax({
-        name: 'softmax'
-      })
-    ]
-  })
+  if (model === null) {
+    model = tf.sequential({
+      layers: [
+        tf.layers.flatten({
+          inputShape: mobileNet.outputs[0].shape.slice(1)
+        }),
+        tf.layers.dense({
+          units: 100,
+          activation: 'relu',
+          kernelInitializer: 'varianceScaling',
+          useBias: true
+        }),
+        tf.layers.dense({
+          name: 'data',
+          units: 4,
+          kernelInitializer: 'varianceScaling',
+          useBias: false
+        }),
+        tf.layers.softmax({
+          name: 'softmax'
+        })
+      ]
+    })
+  }
+
   const optimizer = tf.train.adam(0.0001)
   model.compile({ optimizer: optimizer, loss: 'categoricalCrossentropy' })
   const batchSize = Math.floor(dataset.xs.shape[0] * 0.4)

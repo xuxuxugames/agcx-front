@@ -124,7 +124,7 @@ export default {
       this.saving = true
       await tf.nextFrame()
       await tf.nextFrame()
-      this.model = await trainModel(this.mobileNet, this.dataset)
+      this.model = await trainModel(this.mobileNet, this.dataset, this.model)
       this.saving = false
       this.$notify({
         title: '提示信息',

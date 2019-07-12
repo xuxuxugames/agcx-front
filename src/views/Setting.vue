@@ -31,6 +31,11 @@
         </div>
       </div>
       <div class="train">
+        <el-switch
+          v-model="newModel"
+          active-text="新建模型"
+          inactive-text="增量模型"
+        ></el-switch>
         <el-button type="primary" :v-loading="saving" @click="train"
           >保 存</el-button
         >
@@ -55,6 +60,7 @@ export default {
         right: 0,
         down: 0
       },
+      newModel: true,
       loading: true,
       webcam: null,
       dataset: null,
@@ -124,7 +130,14 @@ export default {
       this.saving = true
       await tf.nextFrame()
       await tf.nextFrame()
-      this.model = await trainModel(this.mobileNet, this.dataset, this.model)
+      let model = (() => {
+        if (this.newModel) {
+          return null
+        } else {
+          return this.model
+        }
+      })()
+      this.model = await trainModel(this.mobileNet, this.dataset, model)
       this.saving = false
       this.$notify({
         title: '提示信息',
@@ -202,10 +215,10 @@ export default {
 
   .control {
     width: 250px;
-    margin-top: 20px;
+    margin-top: 10px;
 
     .arrows {
-      margin-top: 30px;
+      margin-top: 10px;
       margin-left: 50px;
       height: 200px;
 
@@ -265,6 +278,7 @@ export default {
       margin-top: 30px;
 
       .el-button {
+        margin-top: 20px;
         width: 160px;
       }
     }

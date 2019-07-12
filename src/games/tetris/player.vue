@@ -3,18 +3,53 @@
     <div class="panel">
       <h2 class="nextText">Next</h2>
       <div class="nextBox">
-        <block v-if="nextBlock" :init="nextBlock" :stage="stage" class="next" :style="nextBlockStyle" :key="nextBlock.id"/>
+        <block
+          v-if="nextBlock"
+          :init="nextBlock"
+          :stage="stage"
+          class="next"
+          :style="nextBlockStyle"
+          :key="nextBlock.id"
+        />
       </div>
       <div class="buttons">
-        <button v-if="state.playing" @click="pause">{{state.pause?'Resume':'Pause'}}</button>
-        <button v-else @click="start" autofocus>{{state.gameover?'Restart':'Start'}}</button>
+        <button v-if="state.playing" @click="pause">
+          {{ state.pause ? "Resume" : "Pause" }}
+        </button>
+        <button v-else @click="start" autofocus>
+          {{ state.gameover ? "Restart" : "Start" }}
+        </button>
       </div>
-      <h2 class="state">{{stateText}}</h2>
+      <h2 class="state">{{ stateText }}</h2>
     </div>
-    <div :style="{height:height*cellSize+'px',width:width*cellSize+'px'}" class="game">
-      <ground :stage="stage" ref="ground" class="ground" @clearRow="clearRow" @clearAll="clearAll"/>
-      <block v-if="curBlock" :init="curBlock" :stage="stage" ref="shadow" :shadow="true"/>
-      <block v-if="curBlock" :init="curBlock" :stage="stage" ref="block" :key="curBlock.id"/>
+    <div
+      :style="{
+        height: height * cellSize + 'px',
+        width: width * cellSize + 'px'
+      }"
+      class="game"
+    >
+      <ground
+        :stage="stage"
+        ref="ground"
+        class="ground"
+        @clearRow="clearRow"
+        @clearAll="clearAll"
+      />
+      <block
+        v-if="curBlock"
+        :init="curBlock"
+        :stage="stage"
+        ref="shadow"
+        :shadow="true"
+      />
+      <block
+        v-if="curBlock"
+        :init="curBlock"
+        :stage="stage"
+        ref="block"
+        :key="curBlock.id"
+      />
     </div>
   </div>
 </template>
@@ -29,7 +64,7 @@ import _ from 'lodash'
 let blockId = 0
 export default {
   name: 'player',
-  props: ['stage', 'keys'],
+  props: ['onScore', 'onMove', 'onFinish', 'onReset', 'stage', 'keys'],
   mixins: [stageComputed, soundService],
   data () {
     return {
@@ -65,7 +100,6 @@ export default {
   },
   created () {
     _.forEach(this.keys, (v, k) => this.$set(this.actionOf, v, k))
-    window.addEventListener('keydown', this.keydown)
     this.reset()
   },
   methods: {
@@ -77,6 +111,7 @@ export default {
         state: { playing: false, gameover: false, pause: false },
         statistics: _(this.stage.blocks).map(x => [x, 0]).fromPairs().assign({ TOTAL: 0 }).value()
       })
+      this.onReset()
     },
     playBgm (type = `bgm${this.level % 4 + 1}`, isRepeat = true) {
       this.playSound(type, isRepeat)
@@ -108,34 +143,27 @@ export default {
       this.playFX('lineClear')
     },
     clearAll () { this.getScore(3000 * (this.level + 1)) },
-    keydown ($event) {
-      if ($event.keyCode === 32) $event.preventDefault()
+    doMove (direction) {
       if (!this.state.playing) return
-      if ($event.keyCode === 27) return this.pause()
       if (!this.canPlay) return
-      switch (this.actionOf[$event.keyCode]) {
-        case 'straight':
-          this.moveStraight()
-          $event.preventDefault()
-          break
-        case 'left':
+      switch (direction) {
+        case 0:
           this.move(-1, 0)
-          $event.preventDefault()
           break
-        case 'rotate' :
+        case 1:
           this.rotate()
-          $event.preventDefault()
           break
-        case 'right':
+        case 2:
           this.move(1, 0)
-          $event.preventDefault()
           break
-        case 'down':
+        case 3:
           this.move(0, -1)
           this.resetTick()
-          $event.preventDefault()
           break
+        default:
+          return
       }
+      this.onMove(direction)
     },
     pause () {
       if (this.state.pause) {
@@ -173,6 +201,7 @@ export default {
     getScore (v) {
       if (!this.canPlay) return
       this.score += v
+      this.onScore(this.score)
     },
     updateShadow () {
       let { shadow, block, ground } = this.$refs
@@ -212,6 +241,7 @@ export default {
       this.clearTick()
       this.$emit('gameover', this)
       this.playBgm('gameover', false)
+      this.onFinish('lost')
     },
     next () {
       this.curBlock = Object.assign({}, this.nextBlock)
@@ -234,61 +264,62 @@ export default {
 </script>
 
 <style scoped>
-  .player {
-    white-space: nowrap;
-    display: inline-block;
-    background: white;
-    padding: 0;
-    color: #222;
-    width: 450px;
-  }
-  .player > * {
-    display: inline-block;
-    vertical-align: top;
-  }
-  .game {position: relative;
-    outline: solid 1px gray;
-    background-color: black;
-    overflow: hidden;
-  }
-  .buttons {
-    margin-top: 100px;
-    text-align: center;
-  }
-  .buttons button {
-    width: 80px;
-    height: 45px;
-    border: 1px solid #bdc0ba;
-    border-radius: 5px;
-    transition: 100ms;
-    position: relative;
-    font-size: 14px;
-    text-align: center;
-    background-color: white;
-  }
-  .panel {
-    padding: 0px 10px;
-  }
-  .nextText {
-    height: 20px;
-    text-align: center;
-    margin-right: 10px;
-    font-size: 14px;
-    color: #909399;
-    margin-top: 70px
-  }
-  .nextBox {
-    width: 125px;
-    height: 125px;
-    position: relative;
-    background-color: #222;
-    border-radius: 5px
-  }
-  .nextBox .next {
-    position: absolute;
-  }
-  .state {
-    text-align: center;
-    font-size: 20px;
-  }
+.player {
+  white-space: nowrap;
+  display: inline-block;
+  background: white;
+  padding: 0;
+  color: #222;
+  width: 450px;
+}
+.player > * {
+  display: inline-block;
+  vertical-align: top;
+}
+.game {
+  position: relative;
+  outline: solid 1px gray;
+  background-color: black;
+  overflow: hidden;
+}
+.buttons {
+  margin-top: 100px;
+  text-align: center;
+}
+.buttons button {
+  width: 80px;
+  height: 45px;
+  border: 1px solid #bdc0ba;
+  border-radius: 5px;
+  transition: 100ms;
+  position: relative;
+  font-size: 14px;
+  text-align: center;
+  background-color: white;
+}
+.panel {
+  padding: 0px 10px;
+}
+.nextText {
+  height: 20px;
+  text-align: center;
+  margin-right: 10px;
+  font-size: 14px;
+  color: #909399;
+  margin-top: 70px;
+}
+.nextBox {
+  width: 125px;
+  height: 125px;
+  position: relative;
+  background-color: #222;
+  border-radius: 5px;
+}
+.nextBox .next {
+  position: absolute;
+}
+.state {
+  text-align: center;
+  font-size: 20px;
+}
 </style>

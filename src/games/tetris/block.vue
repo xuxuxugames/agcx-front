@@ -1,6 +1,12 @@
 <template>
-  <span class="block" :class="{shadow}">
-    <cell v-for="cell of cells" :data="cell.data" :stage="stage" :pos="cell.pos" :key="cell.id"></cell>
+  <span class="block" :class="{ shadow }">
+    <cell
+      v-for="cell of cells"
+      :data="cell.data"
+      :stage="stage"
+      :pos="cell.pos"
+      :key="cell.id"
+    ></cell>
   </span>
 </template>
 
@@ -49,5 +55,7 @@ export default {
 </script>
 
 <style scoped>
-  .block.shadow {opacity: 0.3}
+.block.shadow {
+  opacity: 0.3;
+}
 </style>

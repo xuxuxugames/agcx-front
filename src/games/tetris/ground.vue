@@ -1,11 +1,18 @@
 <template>
   <div class="ground">
     <transition-group name="cell">
-      <template v-for="(row,y) of this.ground">
-        <template v-for="(cell,x) of row">
-          <cell v-if="cell" :data="cell.data" :pos="[x,y]" :stage="stage" :key="cell.id" class="cell"/>
+      <template v-for="(row, y) of this.ground">
+        <template v-for="(cell, x) of row">
+          <cell
+            v-if="cell"
+            :data="cell.data"
+            :pos="[x, y]"
+            :stage="stage"
+            :key="cell.id"
+            class="cell"
+          />
         </template>
-<!--        <cell v-for="(cell,x) of row" v-if="cell" :data="cell.data" :pos="[x,y]" :stage="stage" :key="cell.id" class="cell"/>-->
+        <!--        <cell v-for="(cell,x) of row" v-if="cell" :data="cell.data" :pos="[x,y]" :stage="stage" :key="cell.id" class="cell"/>-->
       </template>
     </transition-group>
   </div>
@@ -65,12 +72,14 @@ export default {
 </script>
 
 <style scoped>
-  .cell-enter-active {
-    animation: rubberBand 0.3s;
-  }
-  .cell-leave-active {
-    z-index: 10;
-    animation: fadeOutDown 0.3s;
-  }
-  .cell { transition: all 0.3s linear}
+.cell-enter-active {
+  animation: rubberBand 0.3s;
+}
+.cell-leave-active {
+  z-index: 10;
+  animation: fadeOutDown 0.3s;
+}
+.cell {
+  transition: all 0.3s linear;
+}
 </style>

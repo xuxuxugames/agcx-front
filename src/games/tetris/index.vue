@@ -1,7 +1,15 @@
 <template>
   <section id="tetris">
     <div class="tetris">
-      <player :stage="stage" :keys="{straight:32,left:37,rotate:38,right:39,down:40}" ref="player"/>
+      <player
+        :onScore="onScore"
+        :onReset="onReset"
+        :onFinish="onFinish"
+        :onMove="onMove"
+        :stage="stage"
+        :keys="{ straight: 32, left: 37, rotate: 38, right: 39, down: 40 }"
+        ref="player"
+      />
     </div>
   </section>
 </template>
@@ -74,6 +82,7 @@ export default {
   },
   methods: {
     move (direction) {
+      this.$refs.player.doMove(direction)
     }
   },
   components: { player }

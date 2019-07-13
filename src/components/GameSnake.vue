@@ -16,6 +16,9 @@ export default {
   components: {
     Snake
   },
+  mounted () {
+    this.onScore(0)
+  },
   props: {
     onScore: Function,
     onReset: Function,

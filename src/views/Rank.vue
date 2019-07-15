@@ -7,14 +7,14 @@
             size="small"
             v-model="selectedGame"
             placeholder="请选择游戏"
+            @change="loadRanks"
           >
             <el-option
               v-for="item in gameOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
-            >
-            </el-option>
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -26,12 +26,8 @@
             range-separator="至"
             start-placeholder="开始"
             end-placeholder="结束"
+            @change="loadRanks"
           ></el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="small" @click="loadRanks"
-            >筛选</el-button
-          >
         </el-form-item>
       </el-form>
     </div>
@@ -185,7 +181,7 @@ export default {
     margin: 0 auto;
 
     .el-select {
-      width: 100px;
+      width: 150px;
     }
   }
 

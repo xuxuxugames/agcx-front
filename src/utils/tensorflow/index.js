@@ -1,9 +1,17 @@
 import * as tf from '@tensorflow/tfjs'
 
 export async function loadTruncatedMobileNet () {
-  const mobilenet = await tf.loadLayersModel(
-    'https://storage.googleapis.koder.me/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json'
-  )
+  let mobilenet
+
+  try {
+    mobilenet = await tf.loadLayersModel('indexeddb://mobilenet')
+  } catch (e) {
+    mobilenet = await tf.loadLayersModel(
+      'https://storage.googleapis.koder.me/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json'
+    )
+    await mobilenet.save('indexeddb://mobilenet')
+  }
+
   const layer = mobilenet.getLayer('conv_pw_13_relu')
   return tf.model({ inputs: mobilenet.inputs, outputs: layer.output })
 }

@@ -140,7 +140,10 @@ export default {
       if (d === undefined) {
         return ''
       }
-      return new Date(d).toLocaleString()
+      return new Date(d).toLocaleString('zh-CN', {
+        timeZone: 'Asia/Shanghai',
+        hour12: false
+      })
     },
     rankFormatter (row, column) {
       let base = (this.ranks.current_page - 1) * this.ranks.per_page

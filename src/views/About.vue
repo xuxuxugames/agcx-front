@@ -8,7 +8,7 @@
     </div>
     <p>
       AGCX，全称「AirControl Games Collection by
-      XuXuXuGames」，是「XuXuXuGames」团队推出的隔空操作游戏系列合集，使用船新的操作方式来唤醒经典游戏在人们心目中的记忆。合集不只包含了「贪吃蛇」、「吃豆人」这种世界经典游戏，还移植了「2048」等目前较为流行的游戏。
+      XuXuXuGames」，是「XuXuXuGames」团队推出的隔空操作游戏系列合集，使用船新的操作方式来唤醒经典游戏在人们心目中的记忆。合集不只包含了「贪吃蛇」、「俄罗斯方块」这种世界经典游戏，还移植了「2048」等目前较为流行的游戏。
     </p>
   </section>
 </template>
@@ -43,6 +43,8 @@ export default {
 
   p {
     text-indent: 2em;
+    font-size: 13px;
+    line-height: 24px;
   }
 }
 </style>

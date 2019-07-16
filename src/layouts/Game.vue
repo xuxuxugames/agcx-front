@@ -15,11 +15,6 @@
       :onMove="onMove"
     />
     <div class="controller">
-      <el-badge
-        :value="'+' + diff"
-        type="primary"
-        :hidden="!showDiff"
-      ></el-badge>
       <div class="score">{{ score }}</div>
       <div class="image">
         <TensorController
@@ -91,8 +86,6 @@ export default {
         air: false
       },
       score: 0,
-      diff: 0,
-      showDiff: false,
       finished: false
     }
   },
@@ -146,14 +139,7 @@ export default {
       this.finished = false
     },
     updateScore (score) {
-      this.diff = score - this.score
       this.score = score
-      if (this.diff !== 0) {
-        this.showDiff = true
-        setTimeout(() => {
-          this.showDiff = false
-        }, 500)
-      }
     },
     finishGame (status) {
       this.finished = true
@@ -307,12 +293,6 @@ export default {
       height: 10px;
       width: 48px;
       margin-bottom: 2px;
-    }
-
-    .el-badge {
-      margin-top: 10px;
-      margin-right: 35px;
-      float: right;
     }
 
     .score {

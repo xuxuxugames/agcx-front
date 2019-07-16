@@ -119,7 +119,7 @@ class Board {
           tile2.mergedInto = targetTile
           targetTile.value += tile2.value
 
-          this.score += tile2.value
+          this.score += targetTile.value
         }
         resultRow[target] = targetTile
         this.won |= (targetTile.value === 2048)
